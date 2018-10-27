@@ -1,7 +1,6 @@
 import busio
 import time
 import datetime
-import numpy
 import pandas as pd
 from Adafruit_BNO055 import BNO055
 
@@ -40,10 +39,11 @@ for sensor in ["accel_ms2", "mag_uT", "gyro_degs", "euler_deg", "quaternion", "l
   header.append(sensor + "_y")
   header.append(sensor + "_z")
 
-data = [header]
+data = []
+filename = input("filename plz: ")
 
-for i in range(10):
-  input("Press Enter to continue...")
+for i in range(1000):
+  input("Collecting file " + str(i)+ ". Press Enter to continue...")
   start = datetime.datetime.now()
   elapsed_ms = 0
   previous_elapsed_ms = 0
@@ -64,10 +64,9 @@ for i in range(10):
     row += accel + mag + gyro + euler + quaternion + lin_accel + gravity
 
     data.append(row)
-    #time.sleep(1. / SAMPLE_RATE_HZ)  # 100 Hz
     previous_elapsed_ms = elapsed_ms
     elapsed_ms = (datetime.datetime.now() - start).total_seconds() * 1000
 
-  file_name = "data/data" + str(i) + ".csv"
-  df = pd.DataFrame.from_dict(data)
-  df.to_csv(file_name, header=True, index=True, mode='a')
+  file_name = filename + "/" + filename + str(i) + ".csv"
+  df = pd.DataFrame(data, columns = header)
+  df.to_csv(file_name, header=True)
