@@ -2,6 +2,7 @@ import busio
 import time
 import datetime
 import pandas as pd
+import os
 from Adafruit_BNO055 import BNO055
 
 SAMPLE_RATE_HZ = 100
@@ -40,7 +41,11 @@ for sensor in ["accel_ms2", "mag_uT", "gyro_degs", "euler_deg", "quaternion", "l
   header.append(sensor + "_z")
 
 data = []
-filename = input("filename plz: ")
+# TODO: Use python fire =p
+filename = input("Name the folder where data will be stored: ")
+os.mkdir(filename)
+
+duration_s = float(input("Please input how long should a sensor trace be in seconds (floats OK): "))
 
 for i in range(1000):
   input("Collecting file " + str(i)+ ". Press Enter to continue...")
@@ -48,7 +53,7 @@ for i in range(1000):
   elapsed_ms = 0
   previous_elapsed_ms = 0
 
-  while elapsed_ms < 5000:
+  while elapsed_ms < duration_s * 1000:
     # sys, gyro, accel, mag = bno.get_calibration_status()
     vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
 
