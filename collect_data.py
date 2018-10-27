@@ -47,6 +47,8 @@ os.mkdir(filename)
 
 duration_s = float(input("Please input how long should a sensor trace be in seconds (floats OK): "))
 
+# TODO: Add option to delete just recorded trace if it's bad
+# TODO: Add option to save notes per recorded trace 
 for i in range(1000):
   input("Collecting file " + str(i)+ ". Press Enter to continue...")
   start = datetime.datetime.now()
