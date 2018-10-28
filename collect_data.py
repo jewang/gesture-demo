@@ -40,7 +40,6 @@ for sensor in ["accel_ms2", "mag_uT", "gyro_degs", "euler_deg", "quaternion", "l
   header.append(sensor + "_y")
   header.append(sensor + "_z")
 
-data = []
 # TODO: Use python fire =p
 filename = input("Name the folder where data will be stored: ")
 os.mkdir(filename)
@@ -55,6 +54,7 @@ for i in range(1000):
   elapsed_ms = 0
   previous_elapsed_ms = 0
 
+  data = []
   while elapsed_ms < duration_s * 1000:
     # sys, gyro, accel, mag = bno.get_calibration_status()
     vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
