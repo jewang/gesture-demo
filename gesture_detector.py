@@ -55,10 +55,15 @@ previous_elapsed_ms = 0
 last_classified = 0
 
 while True:
-  row = [elapsed_ms] + utils.read_sensors(bno)
+  row = [elapsed_ms] + read_sensors(bno)
   data.append(row)
 
   if elapsed_ms - last_classified >= CHECK_TIME_INCREMENT_MS:
+    print(header)
+    print(data)
+    joblib.dump(header, 'header.joblib') 
+    joblib.dump(data, 'data.joblib') 
+
     df = pd.DataFrame(data, columns=header)
     features = utils.get_model_features(df)
 
