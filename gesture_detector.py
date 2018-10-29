@@ -8,8 +8,7 @@ import utils
 import collections
 from sklearn.externals import joblib
 
-
-model = joblib.loads('models/102pt_model.joblib')
+model = joblib.load('models/102pt_model.joblib')
 
 SAMPLE_RATE_HZ = 100
 QUATERNION_SCALE = (1.0 / (1 << 14))
@@ -51,10 +50,10 @@ while True:
     df = pd.DataFrame(data, columns=header)
     features = utils.get_all_features(df)
 
-    print df
-    print pd.concat([utils.get_all_features(df, generate_feature_names=True),
-                     features], axis=1)
-    print model.predict(df)
+    print(df)
+    print(pd.concat([utils.get_all_features(df, generate_feature_names=True),
+                     features], axis=1))
+    print(model.predict(df))
 
   previous_elapsed_ms = elapsed_ms
   elapsed_ms = (datetime.datetime.now() - start).total_seconds() * 1000
