@@ -10,6 +10,18 @@ from sklearn.externals import joblib
 
 model = joblib.load('models/102pt_model.joblib')
 
+def read_sensors(bno):
+    vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
+    accel = [s / 100. for s in vector[:3]]
+    mag = [s / 16. for s in vector[3:6]]
+    gyro = [s / 900. for s in vector[6:9]]
+    euler = [s / 16. for s in vector[9:12]]
+    quaternion = [s / QUATERNION_SCALE for s in vector[12:16]]
+    lin_accel = [s / 100. for s in vector[16:19]]
+    gravity = [s / 100. for s in vector[19:22]]
+
+    return accel + mag + gyro + euler + quaternion + lin_accel + gravity
+
 SAMPLE_RATE_HZ = 100
 QUATERNION_SCALE = (1.0 / (1 << 14))
 
@@ -48,10 +60,10 @@ while True:
 
   if elapsed_ms - last_classified >= CHECK_TIME_INCREMENT_MS:
     df = pd.DataFrame(data, columns=header)
-    features = utils.get_all_features(df)
+    features = utils.get_model_features(df)
 
     print(df)
-    print(pd.concat([utils.get_all_features(df, generate_feature_names=True),
+    print(pd.concat([utils.get_model_features(df, generate_feature_names=True),
                      features], axis=1))
     print(model.predict(df))
 
