@@ -42,13 +42,16 @@ for sensor in ["accel_ms2", "mag_uT", "gyro_degs", "euler_deg", "quaternion", "l
 
 # TODO: Use python fire =p
 filename = input("Name the folder where data will be stored: ")
-os.mkdir(filename)
+if not os.path.exists(filename):
+  os.mkdir(filename + '/')
+starting_index = int(input("What number should we start on?"))
 
 duration_s = float(input("Please input how long should a sensor trace be in seconds (floats OK): "))
 
 # TODO: Add option to delete just recorded trace if it's bad
 # TODO: Add option to save notes per recorded trace 
-for i in range(1000):
+i = starting_index
+while True:
   input("Collecting file " + str(i)+ ". Press Enter to continue...")
   start = datetime.datetime.now()
   elapsed_ms = 0
@@ -74,6 +77,7 @@ for i in range(1000):
     previous_elapsed_ms = elapsed_ms
     elapsed_ms = (datetime.datetime.now() - start).total_seconds() * 1000
 
-  file_name = filename + "/" + filename + str(i) + ".csv"
+  file_name = filename + "/" + filename + '{0:03d}'.format(i) + ".csv"
   df = pd.DataFrame(data, columns = header)
   df.to_csv(file_name, header=True)
+  i += 1
