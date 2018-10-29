@@ -25,7 +25,7 @@ def read_sensors(bno):
 SAMPLE_RATE_HZ = 100
 QUATERNION_SCALE = (1.0 / (1 << 14))
 
-CHECK_TIME_INCREMENT_MS = 200
+CHECK_TIME_INCREMENT_MS = 500
 SAMPLE_SIZE_MS = 1500
 
 bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
@@ -59,18 +59,12 @@ while True:
   data.append(row)
 
   if elapsed_ms - last_classified >= CHECK_TIME_INCREMENT_MS:
-    print(header)
-    print(data)
-    joblib.dump(header, 'header.joblib') 
-    joblib.dump(data, 'data.joblib') 
-
-    df = pd.DataFrame(data, columns=header)
+    df = pd.DataFrame(list(data), columns=header)
     features = utils.get_model_features(df)
 
-    print(df)
-    print(pd.concat([utils.get_model_features(df, generate_feature_names=True),
-                     features], axis=1))
-    print(model.predict(df))
+    prediction = model.predict([features])[0]
+    if prediction != 'negative_trim':
+        print(prediction)
 
   previous_elapsed_ms = elapsed_ms
   elapsed_ms = (datetime.datetime.now() - start).total_seconds() * 1000
