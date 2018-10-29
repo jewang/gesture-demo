@@ -44,7 +44,7 @@ for sensor in ["accel_ms2", "mag_uT", "gyro_degs", "euler_deg", "quaternion", "l
 filename = input("Name the folder where data will be stored: ")
 if not os.path.exists(filename):
   os.mkdir(filename + '/')
-starting_index = int(input("What number should we start on?"))
+starting_index = int(input("What number should we start on? "))
 
 duration_s = float(input("Please input how long should a sensor trace be in seconds (floats OK): "))
 
