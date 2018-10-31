@@ -1,4 +1,7 @@
 import numpy as np
+import pandas as pd
+from sklearn import preprocessing
+scaler = preprocessing.MinMaxScaler()
 
 QUATERNION_SCALE = (1.0 / (1 << 14))
 
@@ -30,6 +33,18 @@ def get_model_features(trace, generate_feature_names=False):
             features.extend([x + '_' + sensor for x in features_temp])
         else:
             features.extend(features_temp)
+
+    if generate_feature_names:
+        features.append("gyro_y_z_similarity")
+    else:
+        scaled_df = pd.DataFrame(
+            scaler.fit_transform(trace[['gyro_degs_y', 'gyro_degs_z']]),
+            columns=['gyro_degs_y', 'gyro_degs_z'])
+
+        sim = sum(scaled_df['gyro_degs_y'] * scaled_df['gyro_degs_z'])
+
+        features.append(sim)
+        features.append()
     return features
 
 

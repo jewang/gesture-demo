@@ -8,7 +8,7 @@ import utils
 import collections
 from sklearn.externals import joblib
 
-model = joblib.load('models/102pt_model.joblib')
+model = joblib.load('models/167pt_model.joblib')
 
 def read_sensors(bno):
     vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
