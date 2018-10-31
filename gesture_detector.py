@@ -2,13 +2,18 @@ import busio
 import time
 import datetime
 import pandas as pd
-import os
 from Adafruit_BNO055 import BNO055
 import utils
+import os
 import collections
 from sklearn.externals import joblib
+import subprocess
+import shlex
 
 model = joblib.load('models/167pt_model.joblib')
+
+def play(gesture):
+    subprocess.run(shlex.split('omxplayer sounds/' + gesture + '.mp3 -o alsa:hw:1,0'))
 
 def read_sensors(bno):
     vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
@@ -66,9 +71,13 @@ while True:
     print(int(elapsed_ms), prediction)
     if prediction != 'negative_trim':# and last_classification != prediction:
         print("========================>", prediction)
+        play(prediction)
         data.clear()
 
     last_classified = elapsed_ms
     last_classification = prediction
 
   elapsed_ms = (datetime.datetime.now() - start).total_seconds() * 1000
+
+  #if elapsed_ms > 10000:
+  #  break

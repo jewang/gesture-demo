@@ -17,7 +17,6 @@ def get_features(series, generate_feature_names=False):
     features.append(series.var())
     return features
 
-
 def get_model_features(trace, generate_feature_names=False):
     features = []
     trace["accel"] = np.linalg.norm(
@@ -44,7 +43,6 @@ def get_model_features(trace, generate_feature_names=False):
         sim = sum(scaled_df['gyro_degs_y'] * scaled_df['gyro_degs_z'])
 
         features.append(sim)
-        features.append()
     return features
 
 
