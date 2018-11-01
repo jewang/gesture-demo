@@ -10,10 +10,15 @@ from sklearn.externals import joblib
 import subprocess
 import shlex
 
-model = joblib.load('models/167pt_model.joblib')
+model = joblib.load('/home/pi/dev/gesture/models/167pt_model.joblib')
+
+SOUNDS = {
+        'flippendo': 'sounds/flippendo.ogg',
+        'wingardium': 'sounds/wingardium.mp3'
+        }
 
 def play(gesture):
-    subprocess.run(shlex.split('omxplayer sounds/' + gesture + '.mp3 -o alsa:hw:1,0'))
+    subprocess.run(shlex.split('omxplayer /home/pi/dev/gesture/{} -o alsa:hw:1,0 &'.format(SOUNDS[gesture])))
 
 def read_sensors(bno):
     vector = bno._read_vector(BNO055.BNO055_ACCEL_DATA_X_LSB_ADDR, 22)
@@ -68,7 +73,7 @@ while True:
     features = utils.get_model_features(df)
     prediction = model.predict([features])[0]
 
-    print(int(elapsed_ms), prediction)
+    #print(int(elapsed_ms), prediction)
     if prediction != 'negative_trim':# and last_classification != prediction:
         print("========================>", prediction)
         play(prediction)
