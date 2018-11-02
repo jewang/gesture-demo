@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
-scaler = preprocessing.MinMaxScaler()
+
+min_max_scaler = preprocessing.MinMaxScaler()
 
 QUATERNION_SCALE = (1.0 / (1 << 14))
+
 
 def get_features(series, generate_feature_names=False):
     if generate_feature_names:
@@ -15,6 +17,7 @@ def get_features(series, generate_feature_names=False):
     features.append(series.mean())
     features.append(series.std())
     return features
+
 
 def get_model_features(trace, generate_feature_names=False):
     features = []
@@ -32,16 +35,17 @@ def get_model_features(trace, generate_feature_names=False):
         else:
             features.extend(features_temp)
 
-    # if generate_feature_names:
-    #     features.append("gyro_y_z_similarity")
-    # else:
-    #     scaled_df = pd.DataFrame(
-    #         scaler.fit_transform(trace[['gyro_degs_y', 'gyro_degs_z']]),
-    #         columns=['gyro_degs_y', 'gyro_degs_z'])
-    #
-    #     sim = sum(scaled_df['gyro_degs_y'] * scaled_df['gyro_degs_z'])
-    #
-    #     features.append(sim)
+    if generate_feature_names:
+        features.append('accel_z_peaks')
+    else:
+        normalized = min_max_scaler.fit_transform(
+            trace['accel_ms2_z'].values.reshape(-1, 1))[:, 0]  # normalize
+        normalized = normalized[0:len(normalized):5]  # subsample
+        normalized = np.diff(
+            (normalized > 0.77).astype(int))  # convert to binary classifier
+        normalized = normalized[normalized > 0]
+        features.append(sum(normalized))
+
     return features
 
 
@@ -56,5 +60,3 @@ def get_sensor_headers():
         header.append(sensor + "_y")
         header.append(sensor + "_z")
     return header
-
-
