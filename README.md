@@ -10,9 +10,9 @@ This repo includes the code and Python notebooks used to train the gesture recog
 The best way to learn about more this project is via my talks:
 
 * **!!Con West 10-minute Talk**: Overview for a software audience
-  * [Slides](https://docs.google.com/presentation/d/1J6dr6d0nctz3JKKMtB953UbnAGXBKAVPuCJRUvJ6pq4/edit#slide=id.g506f957dc8_0_2)
+  * [Slides](http://jewang.net/static/jewang%20-%20magic%20wand%20for%20bangbangcon.pdf)
+  * [Recording](https://www.youtube.com/watch?v=P9E02GhF3Q4)
 * **Hackaday SuperCon 30-minute Talk**: Focuses on software & ML for a hardware audience)
-  * [Slides](https://docs.google.com/presentation/d/1LbuU7NLAn-FrC9OWS_YPspzu23jBHELe89zSmYk8TOE/edit#slide=id.p) 
+  * [Slides](http://jewang.net/static/jewang%20-%20magic%20wand%20for%20hackaday%20supercon.pdf) 
   * [Recording](https://www.youtube.com/watch?v=EhxpWL65QFM)
   * [Hackaday article](https://hackaday.com/2018/12/07/magic-wand-learns-spells-through-machine-learning-and-an-imu/)
-
